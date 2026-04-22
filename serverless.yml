@@ -9,11 +9,12 @@ provider:
     NODE_ENV: production
     MONGODB_URI: ${env:MONGODB_URI, ''}
     MONGODB_DB_NAME: ${env:MONGODB_DB_NAME, ''}
-    GOOGLE_APPLICATION_CREDENTIALS: "./deepneurons-firebase-adminsdk-fbsvc-5a16d95018.json"
+    GOOGLE_APPLICATION_CREDENTIALS: ${env:GOOGLE_APPLICATION_CREDENTIALS, "./firebase-service-account.json"}
 
 package:
   patterns:
-    - "deepneurons-firebase-adminsdk-fbsvc-5a16d95018.json"
+    - "firebase-service-account.json"
+    - "deepneurons-firebase-adminsdk-fbsvc-*.json"
 
 plugins:
   - serverless-dotenv-plugin

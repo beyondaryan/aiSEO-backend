@@ -1,0 +1,56 @@
+service: aiseo-backend
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  timeout: 29
+  environment:
+    NODE_ENV: production
+    MONGODB_URI: ${env:MONGODB_URI, ''}
+    MONGODB_DB_NAME: ${env:MONGODB_DB_NAME, ''}
+    GOOGLE_APPLICATION_CREDENTIALS: "./deepneurons-firebase-adminsdk-fbsvc-5a16d95018.json"
+
+package:
+  patterns:
+    - "deepneurons-firebase-adminsdk-fbsvc-5a16d95018.json"
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-esbuild
+  - serverless-offline
+
+custom:
+  esbuild:
+    bundle: true
+    minify: true
+    sourcemap: true
+    exclude: [ "aws-sdk" ]
+    target: "node20"
+
+functions:
+  trpc:
+    handler: src/index.trpcHandler
+    url:
+      cors:
+        allowedOrigins:
+          - http://localhost:3000
+          - https://aryan-dev.d9djpd2sux98b.amplifyapp.com
+        allowedHeaders:
+          - "*"
+        allowedMethods:
+          - "*"
+        allowCredentials: true
+
+  api:
+    handler: src/index.openApiHandler
+    url:
+      cors:
+        allowedOrigins:
+          - http://localhost:3000
+          - https://aryan-dev.d9djpd2sux98b.amplifyapp.com
+        allowedHeaders:
+          - "*"
+        allowedMethods:
+          - "*"
+        allowCredentials: true
